@@ -1,0 +1,3 @@
+rootProject.name = "TransparentShap"
+include ':app'
+include ':transparentView'
