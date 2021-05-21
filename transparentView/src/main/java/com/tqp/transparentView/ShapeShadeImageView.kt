@@ -6,8 +6,9 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.view.View
+import android.util.Log
 import androidx.annotation.ColorInt
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 
 /**
@@ -15,7 +16,7 @@ import androidx.core.content.ContextCompat
  * @date  2021/5/20 4:08 下午
  * @email tangqipeng@aograph.com
  */
-class ShapeShadeView: View {
+class ShapeShadeImageView: AppCompatImageView {
 
     private val mViewPaint = Paint()
     private val mPath = Path()
@@ -31,9 +32,6 @@ class ShapeShadeView: View {
     private var mRadius: Float = 0F
     private var mCornersX: Float = 0F
     private var mCornersY: Float = 0F
-
-    private var mShapeWidth = 0
-    private  var mShapeHeight:Int = 0
 
     companion object{
         const val CIRCLE = 0
@@ -82,25 +80,6 @@ class ShapeShadeView: View {
 
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val specWidth = MeasureSpec.getSize(widthMeasureSpec)
-        val specHeight = MeasureSpec.getSize(heightMeasureSpec)
-        val specWMode = MeasureSpec.getMode(widthMeasureSpec)
-        if (specWMode == MeasureSpec.EXACTLY) {
-            mShapeWidth = specWidth
-        } else if (specWMode == MeasureSpec.AT_MOST) {
-            mShapeWidth = specWidth
-        }
-        val specHMode = MeasureSpec.getMode(widthMeasureSpec)
-        if (specHMode == MeasureSpec.EXACTLY) {
-            mShapeHeight = specHeight
-        } else if (specHMode == MeasureSpec.AT_MOST) {
-            mShapeHeight = specHeight
-        }
-        setMeasuredDimension(mShapeWidth, mShapeHeight)
-    }
-
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         drawCircle(canvas)
@@ -108,6 +87,7 @@ class ShapeShadeView: View {
 
     private fun drawCircle(canvas: Canvas?){
         mPath.reset()
+        Log.e("ShapeShadeView", "width is $width, height is $height")
         when (mShapeView) {
             CIRCLE -> {
                 if (mRadius == 0F) {
@@ -116,11 +96,9 @@ class ShapeShadeView: View {
                         mRadius = (height/2).toFloat()
                     }
                 }
-                val x = (width/2 + paddingLeft).toFloat()
-                val y = mRadius + paddingTop
                 mPath.addCircle(
-                    x,
-                    y,
+                    mRadius,
+                    mRadius,
                     mRadius,
                     Path.Direction.CW
                 )
@@ -137,11 +115,9 @@ class ShapeShadeView: View {
                         mRadius = (height/2).toFloat()
                     }
                 }
-                val x = (width/2 + paddingLeft).toFloat()
-                val y = mRadius + paddingTop
                 mPath.addCircle(
-                    x,
-                    y,
+                    mRadius,
+                    mRadius,
                     mRadius,
                     Path.Direction.CW
                 )
