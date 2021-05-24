@@ -62,7 +62,7 @@ class ShapeImageView: AppCompatImageView {
         val array =
             context.theme.obtainStyledAttributes(attrs, R.styleable.ShapeImageView, defStyleAttr, 0)
         mBorderWidth = array.getDimension(R.styleable.ShapeImageView_borderWidth, 0f)
-        mRadius = array.getDimension(R.styleable.ShapeImageView_radius, 0f)
+        mRadius = array.getDimension(R.styleable.ShapeImageView_shapeRadius, 0f)
         mCornersX = array.getDimension(R.styleable.ShapeImageView_cornersX, 0f)
         mCornersY = array.getDimension(R.styleable.ShapeImageView_cornersY, 0f)
         mBorderColor = array.getColor(R.styleable.ShapeImageView_borderColor, ContextCompat.getColor(context, R.color.colorWhite))

@@ -16,7 +16,8 @@
             <enum name="oval" value="2"/>
             <enum name="rightAngleCircle" value="3"/>
         </attr>
-        <attr name="radius" format="dimension"/>
+        <attr name="shapeRadius" format="dimension"/>
+        <attr name="shapeHeight" format="dimension"/>
         <attr name="rightAngleLocation">
             <flag name="leftTop" value="0x03"/>
             <flag name="leftBottom" value="0x30"/>
@@ -27,31 +28,4 @@
         <attr name="cornersY" format="dimension"/>
     </declare-styleable>
 
-    <declare-styleable name="ShapeShadeView">
-        <attr name="shadeBorderWidth" format="dimension"/>
-        <attr name="shadeBorderColor" format="color"/>
-        <attr name="shadeBorderLine" format="enum">
-            <enum name="full" value="0"/>
-            <enum name="dotted" value="1"/>
-        </attr>
-        <attr name="shadeBorderDotted" format="dimension"/>
-        <attr name="shadeBorderBlack" format="dimension"/>
-        <attr name="shadeFrameColor" format="color"/>
-        <attr name="shadeShapeView" format="enum">
-            <enum name="circle" value="0"/>
-            <enum name="round" value="1"/>
-            <enum name="oval" value="2"/>
-            <enum name="rightAngleCircle" value="3"/>
-        </attr>
-        <attr name="shadeRadius" format="dimension"/>
-        <attr name="shadeHeight" format="dimension"/>
-        <attr name="shadeRightAngleLocation">
-            <flag name="leftTop" value="0x03"/>
-            <flag name="leftBottom" value="0x30"/>
-            <flag name="rightTop" value="0x05"/>
-            <flag name="rightBottom" value="0x50"/>
-        </attr>
-        <attr name="shadeCornersX" format="dimension"/>
-        <attr name="shadeCornersY" format="dimension"/>
-    </declare-styleable>
 </resources>

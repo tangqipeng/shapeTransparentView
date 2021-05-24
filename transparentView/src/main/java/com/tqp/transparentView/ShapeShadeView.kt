@@ -64,19 +64,19 @@ class ShapeShadeView: View {
         defStyleAttr
     ){
         val array =
-            context.theme.obtainStyledAttributes(attrs, R.styleable.ShapeShadeView, defStyleAttr, 0)
-        mBorderWidth = array.getDimension(R.styleable.ShapeShadeView_shadeBorderWidth, 0f)
-        mRadius = array.getDimension(R.styleable.ShapeShadeView_shadeRadius, 0f)
-        mShadeHeight = array.getDimension(R.styleable.ShapeShadeView_shadeHeight, 0f)
-        mCornersX = array.getDimension(R.styleable.ShapeShadeView_shadeCornersX, 0f)
-        mCornersY = array.getDimension(R.styleable.ShapeShadeView_shadeCornersY, 0f)
-        mBorderColor = array.getColor(R.styleable.ShapeShadeView_shadeBorderColor, ContextCompat.getColor(context, R.color.colorWhite))
-        mFrameColor = array.getColor(R.styleable.ShapeShadeView_shadeFrameColor, ContextCompat.getColor(context, R.color.colorWhite))
-        mShapeView = array.getInt(R.styleable.ShapeShadeView_shadeShapeView, 0)
-        mBorderLine = array.getInt(R.styleable.ShapeShadeView_shadeBorderLine, 0)
-        val mBorderDotted = array.getDimension(R.styleable.ShapeShadeView_shadeBorderDotted, 0f)
-        val mBorderBlanck = array.getDimension(R.styleable.ShapeShadeView_shadeBorderBlack, 0f)
-        mRightAngleLocation = array.getInt(R.styleable.ShapeShadeView_shadeRightAngleLocation, 0)
+            context.theme.obtainStyledAttributes(attrs, R.styleable.ShapeImageView, defStyleAttr, 0)
+        mShadeHeight = array.getDimension(R.styleable.ShapeImageView_shapeRadius, 0f)
+        mBorderWidth = array.getDimension(R.styleable.ShapeImageView_borderWidth, 0f)
+        mRadius = array.getDimension(R.styleable.ShapeImageView_shapeHeight, 0f)
+        mCornersX = array.getDimension(R.styleable.ShapeImageView_cornersX, 0f)
+        mCornersY = array.getDimension(R.styleable.ShapeImageView_cornersY, 0f)
+        mBorderColor = array.getColor(R.styleable.ShapeImageView_borderColor, ContextCompat.getColor(context, R.color.colorWhite))
+        mFrameColor = array.getColor(R.styleable.ShapeImageView_frameColor, ContextCompat.getColor(context, R.color.colorWhite))
+        mShapeView = array.getInt(R.styleable.ShapeImageView_shapeView, 0)
+        mBorderLine = array.getInt(R.styleable.ShapeImageView_borderLine, 0)
+        val mBorderDotted = array.getDimension(R.styleable.ShapeImageView_borderDotted, 0f)
+        val mBorderBlanck = array.getDimension(R.styleable.ShapeImageView_borderBlack, 0f)
+        mRightAngleLocation = array.getInt(R.styleable.ShapeImageView_rightAngleLocation, 0)
         array.recycle()
         mViewPaint.isAntiAlias = true
         mViewPaint.style = Paint.Style.FILL
