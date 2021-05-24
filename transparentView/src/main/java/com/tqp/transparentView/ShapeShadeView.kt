@@ -20,6 +20,7 @@ class ShapeShadeView: View {
 
     private val mViewPaint = Paint()
     private val mPath = Path()
+    private val mPath1 = Path()
     private val mBorderPaint = Paint()
     private var mBorderWidth: Float = 0f
     @ColorInt
@@ -41,6 +42,7 @@ class ShapeShadeView: View {
         const val CIRCLE = 0
         const val ROUND = 1
         const val OVAL = 2
+        const val RIGHT_ANGLE_CIRCLE = 3
 
         const val LEFT_TOP = 0x03
         const val LEFT_BOTTOM = 0x30
@@ -79,7 +81,7 @@ class ShapeShadeView: View {
 
         mBorderPaint.isAntiAlias = true
         mBorderPaint.style = Paint.Style.STROKE
-        mBorderPaint.strokeWidth = mBorderWidth
+        mBorderPaint.strokeWidth = 2*mBorderWidth
 
         mViewPaint.color = mFrameColor
         mBorderPaint.color = mBorderColor
@@ -112,7 +114,9 @@ class ShapeShadeView: View {
 
     private fun drawShapView(canvas: Canvas?){
         Log.e("ShapeShadeView", "width is $width, height is $height")
+
         mPath.reset()
+        mPath1.reset()
         mPath.moveTo(0F, 0F)//当前view的起点，左上角
         mPath.lineTo(width.toFloat(), 0F)//当前view的右上角
         mPath.lineTo(width.toFloat(), height.toFloat())//当前view的右下角
@@ -161,6 +165,11 @@ class ShapeShadeView: View {
                     mRadius,
                     Path.Direction.CCW
                 )
+                val shapRectF =
+                    RectF(paddingLeft.toFloat(), paddingTop.toFloat(),
+                        (2*mRadius + paddingLeft), (paddingTop + 2*mRadius)
+                    )
+                mPath1.moveTo(paddingLeft.toFloat(), paddingTop + mRadius)
                 if (mRightAngleLocation == LEFT_TOP || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
                     || mRightAngleLocation == LEFT_TOP_AND_RIGHT_TOP || mRightAngleLocation == LEFT_TOP_AND_RIGHT_BOTTOM) {
                     Log.e("SHAPE", "1")
@@ -174,19 +183,13 @@ class ShapeShadeView: View {
                         RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (2*mRadius + paddingLeft), (paddingTop + 2*mRadius))
                     mPath.addArc(rectF1, 180F, 90F)
                     mPath.lineTo(paddingLeft + mRadius, paddingTop+mRadius)
-                }
-                if (mRightAngleLocation == LEFT_BOTTOM || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
-                    || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == LEFT_BOTTOM_AND_RIGHT_BOTTOM){
-                        Log.e("SHAPE", "2")
-                    val rectF =
-                        RectF(paddingLeft.toFloat(), (paddingTop + mRadius), (mRadius + paddingLeft), (paddingTop + 2*mRadius))
-                    mPath.addRect(rectF, Path.Direction.CCW)
 
-                    val rectF1 =
-                        RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (2*mRadius + paddingLeft), (paddingTop + 2*mRadius))
-                    mPath.addArc(rectF1, 90F, 90F)
-                    mPath.lineTo(paddingLeft + mRadius, paddingTop+mRadius)
+                    mPath1.lineTo(paddingLeft.toFloat(), paddingTop.toFloat())
+                    mPath1.lineTo(paddingLeft + mRadius, paddingTop.toFloat())
+                } else {
+                    mPath1.addArc(shapRectF, 180F, 90F)
                 }
+
                 if (mRightAngleLocation == RIGHT_TOP || mRightAngleLocation == LEFT_TOP_AND_RIGHT_TOP
                     || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == RIGHT_TOP_AND_RIGHT_BOTTOM){
                     Log.e("SHAPE", "3")
@@ -199,6 +202,11 @@ class ShapeShadeView: View {
                         RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (2*mRadius + paddingLeft), (paddingTop + 2*mRadius))
                     mPath.addArc(rectF1, 270F, 90F)
                     mPath.lineTo(paddingLeft + mRadius, paddingTop+mRadius)
+
+                    mPath1.lineTo(paddingLeft + 2 * mRadius, paddingTop.toFloat())
+                    mPath1.lineTo(paddingLeft + 2 * mRadius, paddingTop + mRadius)
+                } else {
+                    mPath1.addArc(shapRectF, 270F, 90F)
                 }
 
                 if (mRightAngleLocation == RIGHT_BOTTOM || mRightAngleLocation == LEFT_TOP_AND_RIGHT_BOTTOM
@@ -213,12 +221,47 @@ class ShapeShadeView: View {
                     mPath.addArc(rectF1, 0F, 90F)
                     mPath.lineTo(paddingLeft + mRadius, paddingTop+mRadius)
 
+                    mPath1.lineTo(paddingLeft + 2 * mRadius, paddingTop + 2 * mRadius)
+                    mPath1.lineTo(paddingLeft + mRadius, paddingTop + 2 * mRadius)
+
+                } else {
+                    mPath1.addArc(shapRectF, 0F, 90F)
+                }
+
+                if (mRightAngleLocation == LEFT_BOTTOM || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
+                    || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == LEFT_BOTTOM_AND_RIGHT_BOTTOM){
+                        Log.e("SHAPE", "2")
+                    val rectF =
+                        RectF(paddingLeft.toFloat(), (paddingTop + mRadius), (mRadius + paddingLeft), (paddingTop + 2*mRadius))
+                    mPath.addRect(rectF, Path.Direction.CCW)
+
+                    val rectF1 =
+                        RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (2*mRadius + paddingLeft), (paddingTop + 2*mRadius))
+                    mPath.addArc(rectF1, 90F, 90F)
+                    mPath.lineTo(paddingLeft + mRadius, paddingTop+mRadius)
+
+                    mPath1.lineTo(paddingLeft.toFloat(), paddingTop + 2 * mRadius)
+                    mPath1.lineTo(paddingLeft.toFloat(), paddingTop + mRadius)
+                } else {
+                    mPath1.addArc(shapRectF, 90F, 90F)
                 }
 
             }
         }
+        if (mShapeView != RIGHT_ANGLE_CIRCLE) {
+            if (mBorderWidth > 0) {
+                canvas?.drawPath(mPath, mBorderPaint)
+            }
+        } else {
+            if (mBorderWidth > 0) {
+                canvas?.drawPath(mPath1, mBorderPaint)
+            }
+        }
         canvas?.drawPath(mPath, mViewPaint)
         mPath.close()
+        mPath1.close()
+
+
     }
 
 }

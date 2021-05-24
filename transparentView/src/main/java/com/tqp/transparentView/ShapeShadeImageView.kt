@@ -6,7 +6,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
@@ -20,6 +19,7 @@ class ShapeShadeImageView: AppCompatImageView {
 
     private val mViewPaint = Paint()
     private val mPath = Path()
+    private val mPath1 = Path()
     private val mBorderPaint = Paint()
     private var mBorderWidth: Float = 0f
     @ColorInt
@@ -32,11 +32,13 @@ class ShapeShadeImageView: AppCompatImageView {
     private var mRadius: Float = 0F
     private var mCornersX: Float = 0F
     private var mCornersY: Float = 0F
+    private var isCanvas = false
 
     companion object{
         const val CIRCLE = 0
         const val ROUND = 1
         const val OVAL = 2
+        const val RIGHT_ANGLE_CIRCLE = 3
 
         const val LEFT_TOP = 0x03
         const val LEFT_BOTTOM = 0x30
@@ -74,7 +76,7 @@ class ShapeShadeImageView: AppCompatImageView {
 
         mBorderPaint.isAntiAlias = true
         mBorderPaint.style = Paint.Style.STROKE
-        mBorderPaint.strokeWidth = mBorderWidth
+        mBorderPaint.strokeWidth = 2*mBorderWidth
 
         mViewPaint.color = mFrameColor
         mBorderPaint.color = mBorderColor
@@ -88,6 +90,7 @@ class ShapeShadeImageView: AppCompatImageView {
 
     private fun drawCircle(canvas: Canvas?){
         mPath.reset()
+        mPath1.reset()
         when (mShapeView) {
             CIRCLE -> {
                 if (mRadius == 0F) {
@@ -128,23 +131,35 @@ class ShapeShadeImageView: AppCompatImageView {
                     mRadius,
                     Path.Direction.CW
                 )
+
+                val shapRectF =
+                    RectF(paddingLeft.toFloat(), paddingTop.toFloat(),
+                        (2*mRadius + paddingLeft), (paddingTop + 2*mRadius)
+                    )
+                mPath1.moveTo(paddingLeft.toFloat(), paddingTop + mRadius)
+
                 if (mRightAngleLocation == LEFT_TOP || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
                     || mRightAngleLocation == LEFT_TOP_AND_RIGHT_TOP || mRightAngleLocation == LEFT_TOP_AND_RIGHT_BOTTOM) {
                     val rectF1 =
                         RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (paddingLeft + mRadius), (paddingTop + mRadius))
                     mPath.addRect(rectF1, Path.Direction.CW)
+
+                    mPath1.lineTo(paddingLeft.toFloat(), paddingTop.toFloat())
+                    mPath1.lineTo(paddingLeft + mRadius, paddingTop.toFloat())
+                } else {
+                    mPath1.addArc(shapRectF, 180F, 90F)
                 }
-                if (mRightAngleLocation == LEFT_BOTTOM || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
-                    || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == LEFT_BOTTOM_AND_RIGHT_BOTTOM){
-                    val rectF1 =
-                        RectF(paddingLeft.toFloat(), (paddingTop + mRadius), (paddingLeft + mRadius), (paddingTop + 2 * mRadius))
-                    mPath.addRect(rectF1, Path.Direction.CW)
-                }
+
                 if (mRightAngleLocation == RIGHT_TOP || mRightAngleLocation == LEFT_TOP_AND_RIGHT_TOP
                     || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == RIGHT_TOP_AND_RIGHT_BOTTOM){
                     val rectF1 =
                         RectF((paddingLeft + mRadius), paddingTop.toFloat(), (paddingLeft + 2 * mRadius), (paddingTop + mRadius))
                     mPath.addRect(rectF1, Path.Direction.CW)
+
+                    mPath1.lineTo(paddingLeft + 2 * mRadius, paddingTop.toFloat())
+                    mPath1.lineTo(paddingLeft + 2 * mRadius, paddingTop + mRadius)
+                } else {
+                    mPath1.addArc(shapRectF, 270F, 90F)
                 }
 
                 if (mRightAngleLocation == RIGHT_BOTTOM || mRightAngleLocation == LEFT_TOP_AND_RIGHT_BOTTOM
@@ -152,12 +167,36 @@ class ShapeShadeImageView: AppCompatImageView {
                     val rectF1 =
                         RectF((paddingLeft + mRadius), (paddingTop + mRadius), (paddingLeft + 2 * mRadius), (paddingTop + 2 * mRadius))
                     mPath.addRect(rectF1, Path.Direction.CW)
+
+                    mPath1.lineTo(paddingLeft + 2 * mRadius, paddingTop + 2 * mRadius)
+                    mPath1.lineTo(paddingLeft + mRadius, paddingTop + 2 * mRadius)
+                } else {
+                    mPath1.addArc(shapRectF, 0F, 90F)
                 }
+
+                if (mRightAngleLocation == LEFT_BOTTOM || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
+                    || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == LEFT_BOTTOM_AND_RIGHT_BOTTOM){
+                    val rectF1 =
+                        RectF(paddingLeft.toFloat(), (paddingTop + mRadius), (paddingLeft + mRadius), (paddingTop + 2 * mRadius))
+                    mPath.addRect(rectF1, Path.Direction.CW)
+
+                    mPath1.lineTo(paddingLeft.toFloat(), paddingTop + 2 * mRadius)
+                    mPath1.lineTo(paddingLeft.toFloat(), paddingTop + mRadius)
+                } else {
+                    mPath1.addArc(shapRectF, 90F, 90F)
+                }
+
             }
         }
         mPath.fillType = Path.FillType.WINDING
+        if (mShapeView != RIGHT_ANGLE_CIRCLE) {
+            canvas?.drawPath(mPath, mBorderPaint)
+        } else {
+            canvas?.drawPath(mPath1, mBorderPaint)
+        }
         mPath.toggleInverseFillType()
         canvas?.drawPath(mPath, mViewPaint)
+        mPath.close()
         mPath.reset()
         if (paddingLeft > 0) {
             val rectF = RectF(
@@ -166,6 +205,7 @@ class ShapeShadeImageView: AppCompatImageView {
                 paddingLeft.toFloat(),
                 height.toFloat()
             )
+            isCanvas = true
             mPath.addRect(rectF, Path.Direction.CW)
         } else {
             if (mShapeView != ROUND && mShapeView != OVAL && (paddingTop + 2 * mRadius) < height) {
@@ -175,6 +215,7 @@ class ShapeShadeImageView: AppCompatImageView {
                     width.toFloat(),
                     height.toFloat()
                 )
+                isCanvas = true
                 mPath.addRect(rectF3, Path.Direction.CW)
             }
         }
@@ -185,6 +226,7 @@ class ShapeShadeImageView: AppCompatImageView {
                 width.toFloat(),
                 paddingTop.toFloat()
             )
+            isCanvas = true
             mPath.addRect(rectF1, Path.Direction.CW)
         } else {
             if (mShapeView != ROUND && mShapeView != OVAL && (paddingLeft + 2 * mRadius) < width) {
@@ -194,6 +236,7 @@ class ShapeShadeImageView: AppCompatImageView {
                     width.toFloat(),
                     height.toFloat()
                 )
+                isCanvas = true
                 mPath.addRect(rectF3, Path.Direction.CW)
             }
         }
@@ -204,6 +247,7 @@ class ShapeShadeImageView: AppCompatImageView {
                 width.toFloat(),
                 height.toFloat()
             )
+            isCanvas = true
             mPath.addRect(rectF2, Path.Direction.CW)
         } else {
             if (mShapeView != ROUND && mShapeView != OVAL && (paddingTop + 2 * mRadius) < height) {
@@ -213,6 +257,7 @@ class ShapeShadeImageView: AppCompatImageView {
                     width.toFloat(),
                     height.toFloat()
                 )
+                isCanvas = true
                 mPath.addRect(rectF3, Path.Direction.CW)
             }
         }
@@ -223,6 +268,7 @@ class ShapeShadeImageView: AppCompatImageView {
                 (width - paddingRight).toFloat(),
                 height.toFloat()
             )
+            isCanvas = true
             mPath.addRect(rectF3, Path.Direction.CW)
         }  else {
             if (mShapeView != ROUND && mShapeView != OVAL && (paddingLeft + 2 * mRadius) < width) {
@@ -232,13 +278,15 @@ class ShapeShadeImageView: AppCompatImageView {
                     width.toFloat(),
                     height.toFloat()
                 )
+                isCanvas = true
                 mPath.addRect(rectF3, Path.Direction.CW)
             }
         }
-
-//        mPath.fillType = Path.FillType.WINDING
-        canvas?.drawPath(mPath, mViewPaint)
+        if (isCanvas) {
+            canvas?.drawPath(mPath, mViewPaint)
+        }
         mPath.close()
+        mPath1.close()
     }
 
 }
