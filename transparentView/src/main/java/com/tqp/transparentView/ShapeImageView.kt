@@ -25,6 +25,7 @@ class ShapeImageView: AppCompatImageView {
     @ColorInt
     private var mFrameColor: Int = 0
     private var mShapeView: Int = 0
+    private var mRadius: Float = 0F
     private var mCornersX: Float = 0F
     private var mCornersY: Float = 0F
     private var mRightAngleLocation: Int = 0
@@ -32,6 +33,7 @@ class ShapeImageView: AppCompatImageView {
     companion object{
         const val CIRCLE = 0
         const val ROUND = 1
+        const val OVAL = 2
 
         const val LEFT_TOP = 0x03
         const val LEFT_BOTTOM = 0x30
@@ -55,6 +57,7 @@ class ShapeImageView: AppCompatImageView {
         val array =
             context.theme.obtainStyledAttributes(attrs, R.styleable.ShapeImageView, defStyleAttr, 0)
         mBorderWidth = array.getDimension(R.styleable.ShapeImageView_borderWidth, 0f)
+        mRadius = array.getDimension(R.styleable.ShapeImageView_radius, 0f)
         mCornersX = array.getDimension(R.styleable.ShapeImageView_cornersX, 0f)
         mCornersY = array.getDimension(R.styleable.ShapeImageView_cornersY, 0f)
         mBorderColor = array.getColor(R.styleable.ShapeImageView_borderColor, ContextCompat.getColor(context, R.color.colorWhite))
@@ -77,47 +80,161 @@ class ShapeImageView: AppCompatImageView {
         Log.e("ShapeImageView", "mRightAngleLocation is $mRightAngleLocation")
     }
 
+//    override fun onDraw(canvas: Canvas?) {
+//        val rectF = RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (width - paddingRight).toFloat(), (height - paddingBottom).toFloat())
+//        canvas?.saveLayer(rectF, null, Canvas.ALL_SAVE_FLAG)
+//        super.onDraw(canvas)
+//        canvas?.save()
+//        when (mShapeView) {
+//            CIRCLE -> {
+//                if (mRadius == 0F) {
+//                    mRadius = ((width - paddingLeft - paddingRight)/2).toFloat()
+//                    if ((height - paddingTop - paddingBottom)/2 < mRadius){
+//                        mRadius = ((height - paddingTop - paddingBottom)/2).toFloat()
+//                    }
+//                }
+//                val x = paddingLeft + mRadius
+//                val y = paddingTop + mRadius
+//                mPath.addCircle(
+//                    x,
+//                    y,
+//                    mRadius,
+//                    Path.Direction.CW
+//                )
+//            }
+//            ROUND -> {
+//                mPath.addRoundRect(rectF, mCornersX, mCornersY, Path.Direction.CW)
+//            }
+//            OVAL -> {
+//                mPath.addOval(rectF, Path.Direction.CW)
+//            }
+//            else -> {
+//                if (mRadius == 0F) {
+//                    mRadius = ((width - paddingLeft - paddingRight)/2).toFloat()
+//                    if ((height - paddingTop - paddingBottom)/2 < mRadius){
+//                        mRadius = ((height - paddingTop - paddingBottom)/2).toFloat()
+//                    }
+//                }
+//                val x = paddingLeft + mRadius
+//                val y = paddingTop + mRadius
+//                mPath.addCircle(
+//                    x,
+//                    y,
+//                    mRadius,
+//                    Path.Direction.CW
+//                )
+//                if (mRightAngleLocation == LEFT_TOP || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
+//                    || mRightAngleLocation == LEFT_TOP_AND_RIGHT_TOP || mRightAngleLocation == LEFT_TOP_AND_RIGHT_BOTTOM
+//                ) {
+//                    val rectF1 =
+//                        RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (paddingLeft + mRadius), (paddingTop + mRadius))
+//                    mPath.addRect(rectF1, Path.Direction.CW)
+//                }
+//                if (mRightAngleLocation == LEFT_BOTTOM || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
+//                    || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == LEFT_BOTTOM_AND_RIGHT_BOTTOM
+//                ){
+//                    val rectF1 =
+//                        RectF(paddingLeft.toFloat(), (paddingTop + mRadius), (paddingLeft + mRadius), (paddingTop + 2 *mRadius))
+//                    mPath.addRect(rectF1, Path.Direction.CW)
+//                }
+//                if (mRightAngleLocation == RIGHT_TOP || mRightAngleLocation == LEFT_TOP_AND_RIGHT_TOP
+//                    || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == RIGHT_TOP_AND_RIGHT_BOTTOM
+//                ){
+//                    val rectF1 =
+//                        RectF((paddingLeft + mRadius), paddingTop.toFloat(), (paddingLeft + 2 * mRadius), (paddingTop + mRadius))
+//                    mPath.addRect(rectF1, Path.Direction.CW)
+//                }
+//
+//                if (mRightAngleLocation == RIGHT_BOTTOM || mRightAngleLocation == LEFT_TOP_AND_RIGHT_BOTTOM
+//                    || mRightAngleLocation == RIGHT_TOP_AND_RIGHT_BOTTOM || mRightAngleLocation == LEFT_BOTTOM_AND_RIGHT_BOTTOM
+//                ){
+//                    val rectF1 =
+//                        RectF((paddingLeft + mRadius), (paddingTop + mRadius), (paddingLeft + 2 * mRadius), (paddingTop + 2 *mRadius))
+//                    mPath.addRect(rectF1, Path.Direction.CW)
+//                }
+//            }
+//        }
+//
+//        canvas?.drawPath(mPath, mViewPaint)
+//        mPath.close()
+//        canvas?.restore()
+//
+//    }
+
     override fun onDraw(canvas: Canvas?) {
-        val rectF = RectF(0F, 0F, width.toFloat(), height.toFloat())
-        canvas?.saveLayer(rectF, null, Canvas.ALL_SAVE_FLAG)
-        super.onDraw(canvas)
-        canvas?.save()
         when (mShapeView) {
             CIRCLE -> {
-                var radius = width/2
-                if (height < width){
-                    radius = height/2
+                if (mRadius == 0F) {
+                    mRadius = ((width - paddingLeft - paddingRight)/2).toFloat()
+                    if ((height - paddingTop - paddingBottom)/2 < mRadius){
+                        mRadius = ((height - paddingTop - paddingBottom)/2).toFloat()
+                    }
                 }
-                mPath.addCircle(radius.toFloat(), radius.toFloat(), radius.toFloat(), Path.Direction.CW)
+                val x = paddingLeft + mRadius
+                val y = paddingTop + mRadius
+                mPath.addCircle(
+                    x,
+                    y,
+                    mRadius,
+                    Path.Direction.CW
+                )
+                val rectF = RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (paddingLeft + 2*mRadius), (paddingTop + 2*mRadius))
+                canvas?.saveLayer(rectF, null, Canvas.ALL_SAVE_FLAG)
+                super.onDraw(canvas)
+                canvas?.save()
             }
             ROUND -> {
+                val rectF = RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (width - paddingRight).toFloat(), (height - paddingBottom).toFloat())
+                canvas?.saveLayer(rectF, null, Canvas.ALL_SAVE_FLAG)
+                super.onDraw(canvas)
+                canvas?.save()
                 mPath.addRoundRect(rectF, mCornersX, mCornersY, Path.Direction.CW)
             }
+            OVAL -> {
+                val rectF = RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (width - paddingRight).toFloat(), (height - paddingBottom).toFloat())
+                canvas?.saveLayer(rectF, null, Canvas.ALL_SAVE_FLAG)
+                super.onDraw(canvas)
+                canvas?.save()
+                mPath.addOval(rectF, Path.Direction.CW)
+            }
             else -> {
-                var radius = width/2
-                if (height < width){
-                    radius = height/2
+                if (mRadius == 0F) {
+                    mRadius = ((width - paddingLeft - paddingRight)/2).toFloat()
+                    if ((height - paddingTop - paddingBottom)/2 < mRadius){
+                        mRadius = ((height - paddingTop - paddingBottom)/2).toFloat()
+                    }
                 }
-                mPath.addCircle(radius.toFloat(), radius.toFloat(), radius.toFloat(), Path.Direction.CW)
+                val x = paddingLeft + mRadius
+                val y = paddingTop + mRadius
+                mPath.addCircle(
+                    x,
+                    y,
+                    mRadius,
+                    Path.Direction.CW
+                )
+                val rectF = RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (paddingLeft + 2*mRadius), (paddingTop + 2*mRadius))
+                canvas?.saveLayer(rectF, null, Canvas.ALL_SAVE_FLAG)
+                super.onDraw(canvas)
+                canvas?.save()
                 if (mRightAngleLocation == LEFT_TOP || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
                     || mRightAngleLocation == LEFT_TOP_AND_RIGHT_TOP || mRightAngleLocation == LEFT_TOP_AND_RIGHT_BOTTOM
                 ) {
                     val rectF1 =
-                        RectF(0F, 0F, (width / 2).toFloat(), (height/2).toFloat())
+                        RectF(paddingLeft.toFloat(), paddingTop.toFloat(), (paddingLeft + mRadius), (paddingTop + mRadius))
                     mPath.addRect(rectF1, Path.Direction.CW)
                 }
                 if (mRightAngleLocation == LEFT_BOTTOM || mRightAngleLocation == LEFT_TOP_AND_LEFT_BOTTOM
                     || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == LEFT_BOTTOM_AND_RIGHT_BOTTOM
                 ){
                     val rectF1 =
-                        RectF(0F, (height / 2).toFloat(), (width / 2).toFloat(), height.toFloat())
+                        RectF(paddingLeft.toFloat(), (paddingTop + mRadius), (paddingLeft + mRadius), (paddingTop + 2 *mRadius))
                     mPath.addRect(rectF1, Path.Direction.CW)
                 }
                 if (mRightAngleLocation == RIGHT_TOP || mRightAngleLocation == LEFT_TOP_AND_RIGHT_TOP
                     || mRightAngleLocation == RIGHT_TOP_AND_LEFT_BOTTOM || mRightAngleLocation == RIGHT_TOP_AND_RIGHT_BOTTOM
                 ){
                     val rectF1 =
-                        RectF((width / 2).toFloat(), 0F, width.toFloat(), (height / 2).toFloat())
+                        RectF((paddingLeft + mRadius), paddingTop.toFloat(), (paddingLeft + 2 * mRadius), (paddingTop + mRadius))
                     mPath.addRect(rectF1, Path.Direction.CW)
                 }
 
@@ -125,14 +242,14 @@ class ShapeImageView: AppCompatImageView {
                     || mRightAngleLocation == RIGHT_TOP_AND_RIGHT_BOTTOM || mRightAngleLocation == LEFT_BOTTOM_AND_RIGHT_BOTTOM
                 ){
                     val rectF1 =
-                        RectF((width / 2).toFloat(), (height / 2).toFloat(), width.toFloat(), height.toFloat())
+                        RectF((paddingLeft + mRadius), (paddingTop + mRadius), (paddingLeft + 2 * mRadius), (paddingTop + 2 *mRadius))
                     mPath.addRect(rectF1, Path.Direction.CW)
                 }
             }
         }
 
         canvas?.drawPath(mPath, mViewPaint)
-
+        mPath.close()
         canvas?.restore()
 
     }

@@ -7,7 +7,8 @@
         <attr name="shapeView" format="enum">
             <enum name="circle" value="0"/>
             <enum name="round" value="1"/>
-            <enum name="rightAngleCircle" value="2"/>
+            <enum name="oval" value="2"/>
+            <enum name="rightAngleCircle" value="3"/>
         </attr>
         <attr name="radius" format="dimension"/>
         <attr name="rightAngleLocation">

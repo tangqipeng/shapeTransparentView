@@ -13,6 +13,7 @@
         android:layout_height="150dp"
         android:src="@mipmap/meinv_4"
         android:scaleType="centerCrop"
+        android:paddingLeft="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginLeft="20dp"
@@ -20,7 +21,9 @@
         app:shapeView="round"
         app:cornersX="20dp"
         app:cornersY="20dp"
-        android:layout_marginStart="20dp" />
+        android:layout_marginStart="20dp"
+        android:paddingStart="10dp"
+        tools:ignore="RtlSymmetry" />
 
     <com.tqp.transparentView.ShapeImageView
         android:id="@+id/shapeImageView"
@@ -28,6 +31,7 @@
         android:layout_height="150dp"
         android:src="@mipmap/meinv_4"
         android:scaleType="centerCrop"
+        android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginRight="20dp"
@@ -35,7 +39,9 @@
         app:shapeView="round"
         app:cornersX="20dp"
         app:cornersY="20dp"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginEnd="20dp"
+        android:paddingStart="10dp"
+        tools:ignore="RtlSymmetry" />
 
     <com.tqp.transparentView.ShapeShadeImageView
         android:id="@+id/shapeView1"
@@ -44,11 +50,14 @@
         android:src="@mipmap/meinv_4"
         android:scaleType="centerCrop"
         android:layout_marginLeft="20dp"
+        android:paddingLeft="10dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
         app:shapeView="circle"
         app:layout_constraintTop_toBottomOf="@+id/shapeView"
-        android:layout_marginStart="20dp" />
+        android:layout_marginStart="20dp"
+        android:paddingStart="10dp"
+        tools:ignore="RtlSymmetry" />
 
     <com.tqp.transparentView.ShapeImageView
         android:id="@+id/shapeImageView1"
@@ -56,12 +65,15 @@
         android:layout_height="150dp"
         android:src="@mipmap/meinv_4"
         android:scaleType="centerCrop"
+        android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         app:shapeView="circle"
         app:layout_constraintTop_toBottomOf="@+id/shapeImageView"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginEnd="20dp"
+        android:paddingStart="10dp"
+        tools:ignore="RtlSymmetry" />
 
     <com.tqp.transparentView.ShapeShadeImageView
         android:id="@+id/shapeView2"
@@ -70,12 +82,15 @@
         android:src="@mipmap/meinv_4"
         android:scaleType="centerCrop"
         android:layout_marginLeft="20dp"
+        android:paddingLeft="10dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
         app:shapeView="rightAngleCircle"
         app:rightAngleLocation="rightBottom|leftTop"
         app:layout_constraintTop_toBottomOf="@+id/shapeView1"
-        android:layout_marginStart="20dp" />
+        android:layout_marginStart="20dp"
+        android:paddingStart="10dp"
+        tools:ignore="RtlSymmetry" />
 
     <com.tqp.transparentView.ShapeImageView
         android:id="@+id/shapeImageView2"
@@ -83,13 +98,16 @@
         android:layout_height="150dp"
         android:src="@mipmap/meinv_4"
         android:scaleType="centerCrop"
+        android:paddingLeft="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         app:shapeView="rightAngleCircle"
         app:rightAngleLocation="leftBottom|rightTop"
         app:layout_constraintTop_toBottomOf="@+id/shapeImageView1"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginEnd="20dp"
+        android:paddingStart="10dp"
+        tools:ignore="RtlSymmetry" />
 
     <com.tqp.transparentView.ShapeShadeImageView
         android:id="@+id/shapeView3"
@@ -98,12 +116,14 @@
         android:src="@mipmap/meinv_4"
         android:scaleType="centerCrop"
         android:layout_marginLeft="20dp"
+        android:paddingLeft="20dp"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
-        app:shapeView="rightAngleCircle"
-        app:rightAngleLocation="rightBottom"
+        app:shapeView="oval"
         app:layout_constraintTop_toBottomOf="@+id/shapeView2"
-        android:layout_marginStart="20dp" />
+        android:layout_marginStart="20dp"
+        android:paddingStart="20dp"
+        tools:ignore="RtlSymmetry" />
 
     <com.tqp.transparentView.ShapeImageView
         android:id="@+id/shapeImageView3"
@@ -111,12 +131,14 @@
         android:layout_height="150dp"
         android:src="@mipmap/meinv_4"
         android:scaleType="centerCrop"
+        android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        app:shapeView="rightAngleCircle"
-        app:rightAngleLocation="leftBottom"
+        app:shapeView="oval"
         app:layout_constraintTop_toBottomOf="@+id/shapeImageView2"
-        android:layout_marginEnd="20dp" />
+        android:layout_marginEnd="20dp"
+        android:paddingStart="20dp"
+        tools:ignore="RtlSymmetry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

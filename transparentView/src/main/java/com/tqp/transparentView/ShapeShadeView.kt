@@ -121,7 +121,7 @@ class ShapeShadeView: View {
             CIRCLE -> {
                 if (mRadius == 0F) {
                     mRadius = ((width - paddingLeft - paddingRight)/2).toFloat()
-                    if ((height - paddingTop - paddingBottom) < mRadius){
+                    if ((height - paddingTop - paddingBottom)/2 < mRadius){
                         mRadius = ((height - paddingTop - paddingBottom)/2).toFloat()
                     }
                 }
@@ -148,9 +148,9 @@ class ShapeShadeView: View {
             }
             else -> {
                 if (mRadius == 0F) {
-                    mRadius = (width / 2).toFloat()
-                    if (height < width){
-                        mRadius = (height/2).toFloat()
+                    mRadius = ((width - paddingLeft - paddingRight)/2).toFloat()
+                    if ((height - paddingTop - paddingBottom)/2 < mRadius){
+                        mRadius = ((height - paddingTop - paddingBottom)/2).toFloat()
                     }
                 }
                 val x = mRadius + paddingLeft
