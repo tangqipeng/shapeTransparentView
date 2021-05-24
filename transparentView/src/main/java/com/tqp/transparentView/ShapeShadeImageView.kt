@@ -158,17 +158,86 @@ class ShapeShadeImageView: AppCompatImageView {
         mPath.fillType = Path.FillType.WINDING
         mPath.toggleInverseFillType()
         canvas?.drawPath(mPath, mViewPaint)
-        if (mShapeView != ROUND && mShapeView != OVAL) {
-            mPath.reset()
+        mPath.reset()
+        if (paddingLeft > 0) {
             val rectF = RectF(
+                0F,
+                paddingTop.toFloat(),
                 paddingLeft.toFloat(),
-                paddingTop + 2 *mRadius,
-                (width - paddingRight).toFloat(),
-                (height - paddingBottom).toFloat()
+                height.toFloat()
             )
-            mPath.addRect (rectF, Path.Direction.CW)
-            canvas?.drawPath(mPath, mViewPaint)
+            mPath.addRect(rectF, Path.Direction.CW)
+        } else {
+            if (mShapeView != ROUND && mShapeView != OVAL && (paddingTop + 2 * mRadius) < height) {
+                val rectF3 = RectF(
+                    0F,
+                    paddingTop + 2 * mRadius,
+                    width.toFloat(),
+                    height.toFloat()
+                )
+                mPath.addRect(rectF3, Path.Direction.CW)
+            }
         }
+        if (paddingTop > 0) {
+            val rectF1 = RectF(
+                0F,
+                0F,
+                width.toFloat(),
+                paddingTop.toFloat()
+            )
+            mPath.addRect(rectF1, Path.Direction.CW)
+        } else {
+            if (mShapeView != ROUND && mShapeView != OVAL && (paddingLeft + 2 * mRadius) < width) {
+                val rectF3 = RectF(
+                    paddingLeft + 2 * mRadius,
+                    0F,
+                    width.toFloat(),
+                    height.toFloat()
+                )
+                mPath.addRect(rectF3, Path.Direction.CW)
+            }
+        }
+        if (paddingRight > 0) {
+            val rectF2 = RectF(
+                (width - paddingRight).toFloat(),
+                0F,
+                width.toFloat(),
+                height.toFloat()
+            )
+            mPath.addRect(rectF2, Path.Direction.CW)
+        } else {
+            if (mShapeView != ROUND && mShapeView != OVAL && (paddingTop + 2 * mRadius) < height) {
+                val rectF3 = RectF(
+                    0F,
+                    paddingTop + 2 * mRadius,
+                    width.toFloat(),
+                    height.toFloat()
+                )
+                mPath.addRect(rectF3, Path.Direction.CW)
+            }
+        }
+        if (paddingBottom > 0) {
+            val rectF3 = RectF(
+                0F,
+                (height - paddingBottom).toFloat(),
+                (width - paddingRight).toFloat(),
+                height.toFloat()
+            )
+            mPath.addRect(rectF3, Path.Direction.CW)
+        }  else {
+            if (mShapeView != ROUND && mShapeView != OVAL && (paddingLeft + 2 * mRadius) < width) {
+                val rectF3 = RectF(
+                    paddingLeft + 2 * mRadius,
+                    0F,
+                    width.toFloat(),
+                    height.toFloat()
+                )
+                mPath.addRect(rectF3, Path.Direction.CW)
+            }
+        }
+
+//        mPath.fillType = Path.FillType.WINDING
+        canvas?.drawPath(mPath, mViewPaint)
         mPath.close()
     }
 
