@@ -3,6 +3,12 @@
     <declare-styleable name="ShapeImageView">
         <attr name="borderWidth" format="dimension"/>
         <attr name="borderColor" format="color"/>
+        <attr name="borderLine" format="enum">
+            <enum name="full" value="0"/>
+            <enum name="dotted" value="1"/>
+        </attr>
+        <attr name="borderDotted" format="dimension"/>
+        <attr name="borderBlack" format="dimension"/>
         <attr name="frameColor" format="color"/>
         <attr name="shapeView" format="enum">
             <enum name="circle" value="0"/>
@@ -24,6 +30,12 @@
     <declare-styleable name="ShapeShadeView">
         <attr name="shadeBorderWidth" format="dimension"/>
         <attr name="shadeBorderColor" format="color"/>
+        <attr name="shadeBorderLine" format="enum">
+            <enum name="full" value="0"/>
+            <enum name="dotted" value="1"/>
+        </attr>
+        <attr name="shadeBorderDotted" format="dimension"/>
+        <attr name="shadeBorderBlack" format="dimension"/>
         <attr name="shadeFrameColor" format="color"/>
         <attr name="shadeShapeView" format="enum">
             <enum name="circle" value="0"/>

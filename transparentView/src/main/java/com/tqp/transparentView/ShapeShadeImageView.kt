@@ -1,10 +1,7 @@
 package com.tqp.transparentView
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatImageView
@@ -28,6 +25,7 @@ class ShapeShadeImageView: AppCompatImageView {
     @ColorInt
     private var mFrameColor: Int = 0
     private var mShapeView: Int = 0
+    private var mBorderLine: Int = 0
     private var mRightAngleLocation: Int = 0
     private var mRadius: Float = 0F
     private var mCornersX: Float = 0F
@@ -39,6 +37,8 @@ class ShapeShadeImageView: AppCompatImageView {
         const val ROUND = 1
         const val OVAL = 2
         const val RIGHT_ANGLE_CIRCLE = 3
+
+        const val DOTTED = 1
 
         const val LEFT_TOP = 0x03
         const val LEFT_BOTTOM = 0x30
@@ -68,6 +68,9 @@ class ShapeShadeImageView: AppCompatImageView {
         mBorderColor = array.getColor(R.styleable.ShapeImageView_borderColor, ContextCompat.getColor(context, R.color.colorWhite))
         mFrameColor = array.getColor(R.styleable.ShapeImageView_frameColor, ContextCompat.getColor(context, R.color.colorWhite))
         mShapeView = array.getInt(R.styleable.ShapeImageView_shapeView, 0)
+        mBorderLine = array.getInt(R.styleable.ShapeImageView_borderLine, 0)
+        val mBorderDotted = array.getDimension(R.styleable.ShapeImageView_borderDotted, 0f)
+        val mBorderBlanck = array.getDimension(R.styleable.ShapeImageView_borderBlack, 0f)
         mRightAngleLocation = array.getInt(R.styleable.ShapeImageView_rightAngleLocation, 0)
         array.recycle()
         mViewPaint.isAntiAlias = true
@@ -77,6 +80,9 @@ class ShapeShadeImageView: AppCompatImageView {
         mBorderPaint.isAntiAlias = true
         mBorderPaint.style = Paint.Style.STROKE
         mBorderPaint.strokeWidth = 2*mBorderWidth
+        if (mBorderLine == DOTTED){
+            mBorderPaint.pathEffect = DashPathEffect(floatArrayOf(mBorderDotted, mBorderBlanck), 0F)
+        }
 
         mViewPaint.color = mFrameColor
         mBorderPaint.color = mBorderColor
