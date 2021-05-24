@@ -87,7 +87,6 @@ class ShapeShadeImageView: AppCompatImageView {
 
     private fun drawCircle(canvas: Canvas?){
         mPath.reset()
-        Log.e("ShapeShadeView", "width is $width, height is $height")
         when (mShapeView) {
             CIRCLE -> {
                 if (mRadius == 0F) {

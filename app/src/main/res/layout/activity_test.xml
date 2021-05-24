@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TestActivity"
+    android:background="@color/color_66"
     tools:ignore="MissingDefaultResource">
 
 
@@ -32,11 +33,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="80dp"
-        app:shapeView="circle"
-        app:radius="150dp"
+        app:shadeShapeView="rightAngleCircle"
+        app:shadeRadius="150dp"
+        android:paddingLeft="52dp"
+        app:shadeCornersX="20dp"
+        app:shadeCornersY="20dp"
+        app:shadeRightAngleLocation="rightTop|leftBottom"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingStart="52dp"
+        tools:ignore="RtlSymmetry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
